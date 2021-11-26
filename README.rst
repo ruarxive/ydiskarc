@@ -72,6 +72,7 @@ Synchronizes files and metadata from public resource of directory type to the lo
 
 
 Extracts all files and metadata from "https://disk.yandex.ru/d/VVNMYpZtWtST9Q" resource to the dir "mos9maystyle"
+
 .. code-block:: bash
 
     $ ydiskarc sync --url https://disk.yandex.ru/d/VVNMYpZtWtST9Q -o mos9maystyle
