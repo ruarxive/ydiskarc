@@ -1,5 +1,5 @@
 ydiskarc: a command-line tool to backup public resources from Yandex.disk (disk.yandex.ru / yadi.sk) filestorage service
-########################################################################################
+########################################################################################################################
 
 ydiskarc (pronounced *Ai-disk-arc*) is a command line tool used to backup Yandex.Disk public resources.
 Public resources are opnly shared files and folders from Yandex.Disk service.
@@ -85,6 +85,7 @@ Downloads single file or directory. Single file downloaded with original file fo
 with all files inside.
 
 Downloads file from url "https://disk.yandex.ru/i/t_pNaarK8UJ-bQ" and saves it into folder "files" with metadata saved as "_metadata.json"
+
 .. code-block:: bash
 
     $ ydiskarc full --url https://disk.yandex.ru/i/t_pNaarK8UJ-bQ -o files -v -m
