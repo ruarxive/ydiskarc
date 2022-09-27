@@ -30,6 +30,8 @@ def get_file(url, filepath=None, filename=None, params=None, aria2=False, aria2p
             filename = os.path.join(filepath, fname)
         else:
             filename = fname
+    elif filepath is not None:
+            filename = os.path.join(filepath, filename)       
     if not aria2:
         f = open(filename, 'wb')
         total = 0
@@ -100,9 +102,13 @@ def yd_get_and_store_dir(url, path, output, update=True, nofiles=False, iterativ
                             continue
                         arr = [output,]
                         arr.extend([i.rstrip() for i in row['path'].split('/')])
-                        file_path = os.path.join(*arr)
+                        file_path = os.path.join(*arr[:-1])
+                        print(file_path)
+#                        print(row['path'])
+#                        print(arr[:-1])
+#                        print(file_path)
                         if not os.path.exists(file_path) or not update:
-                            get_file(row['file'], file_path)
+                            get_file(row['file'], file_path, filename=arr[-1])
                             logging.info('Saved %s' % (row['path']))
                         else:
                             logging.info('Already stored %s' % (row['path']))
