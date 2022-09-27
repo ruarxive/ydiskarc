@@ -30,7 +30,7 @@ def cli1():
 @click.option('--metadata', '-m', is_flag=True, help='Extract and save metadata')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output. Print additional info')
 def full(url, output, filename, metadata, verbose):
-    """s public resource files"""
+    """Full copy of public resource files"""
     if verbose:
         enableVerbose()
     if url is None:
@@ -53,7 +53,7 @@ def cli2():
 @click.option('--nofiles', '-n', is_flag=True, help='Files not stored, only metadata collected')
 @click.option('--verbose', '-v', is_flag=True, help='Verbose output. Print additional info')
 def sync(url, output, update, nofiles, verbose):
-    """s public resource files"""
+    """Sync public resource files"""
     if verbose:
         enableVerbose()
     if url is None:

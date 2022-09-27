@@ -1,3 +1,4 @@
 lxml
 click
 pytest
+pyyaml
