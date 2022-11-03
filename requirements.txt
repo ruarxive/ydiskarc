@@ -2,3 +2,4 @@ lxml
 click
 pytest
 pyyaml
+rich

@@ -7,15 +7,20 @@ import json
 import re
 from os.path import expanduser
 import shutil
+from rich.progress import Progress, TextColumn
 
 YD_API = 'https://cloud-api.yandex.net/v1/disk/public/resources'
 YD_API_DOWNLOAD = 'https://cloud-api.yandex.net/v1/disk/public/resources/download'
 
 REQUEST_HEADER = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Mobile Safari/537.36'}
-DEFAULT_CHUNK_SIZE = 4096
+DEFAULT_CHUNK_SIZE = 32765
 
-def get_file(url, filepath=None, filename=None, params=None, aria2=False, aria2path=None, makedirs=True):
-    logging.debug('Retrieving file from %s' % (url))
+def get_file(url, filepath=None, filename=None, params=None, aria2=False, aria2path=None, makedirs=True, filesize=None):
+    progress = Progress(TextColumn("[progress.description]{task.description}"),)
+    if filesize is not None:
+        task1 = progress.add_task("[green]Downloading...", total=int(filesize))
+    msg = 'Retrieving file from %s' % (url) if filesize is None else 'Retrieving file from %s with size %d' % (url, filesize)
+    logging.info(msg)
     if params:
         page = requests.get(url, params, headers=REQUEST_HEADER, stream=True, verify=True)
     else:
@@ -41,8 +46,12 @@ def get_file(url, filepath=None, filename=None, params=None, aria2=False, aria2p
             if line:
                 f.write(line)
             total += len(line)
-            if chunk % 1000 == 0:
-                logging.debug('File %s to size %d' % (filename, total))
+            if filesize is not None:
+#               logging.info('File %s to size %d' % (filename, total))               
+                progress.update(task1, advance=len(line))
+            if chunk % 10 == 0:
+                logging.info('File %s to size %d' % (filename, total))
+                pass
         f.close()
     else:
         dirpath = os.path.dirname(filename)
@@ -103,12 +112,11 @@ def yd_get_and_store_dir(url, path, output, update=True, nofiles=False, iterativ
                         arr = [output,]
                         arr.extend([i.rstrip() for i in row['path'].split('/')])
                         file_path = os.path.join(*arr[:-1])
-                        print(file_path)
 #                        print(row['path'])
 #                        print(arr[:-1])
 #                        print(file_path)
                         if not os.path.exists(file_path) or not update:
-                            get_file(row['file'], file_path, filename=arr[-1])
+                            get_file(row['file'], file_path, filename=arr[-1], filesize=row['size'])
                             logging.info('Saved %s' % (row['path']))
                         else:
                             logging.info('Already stored %s' % (row['path']))

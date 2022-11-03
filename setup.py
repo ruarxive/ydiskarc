@@ -37,7 +37,8 @@ tests_require = [
 install_requires = [
     'lxml',
     'click',
-    'pyyaml'
+    'pyyaml',
+    'rich'
 ]
 
 
