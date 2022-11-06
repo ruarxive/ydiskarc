@@ -49,7 +49,7 @@ def get_file(url, filepath=None, filename=None, params=None, aria2=False, aria2p
             if filesize is not None:
 #               logging.info('File %s to size %d' % (filename, total))               
                 progress.update(task1, advance=len(line))
-            if chunk % 10 == 0:
+            if chunk % 1000 == 0:
                 logging.info('File %s to size %d' % (filename, total))
                 pass
         f.close()
