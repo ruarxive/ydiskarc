@@ -6,7 +6,33 @@ import codecs
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-import ydiskarc
+# Read version without importing the package
+import re
+import codecs
+
+
+def read_version():
+    with codecs.open('ydiskarc/__init__.py', encoding='utf8') as f:
+        version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read(), re.M)
+        if version_match:
+            return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
+
+def read_author():
+    with codecs.open('ydiskarc/__init__.py', encoding='utf8') as f:
+        author_match = re.search(r"^__author__ = ['\"]([^'\"]*)['\"]", f.read(), re.M)
+        if author_match:
+            return author_match.group(1)
+    return "Ivan Begtin"
+
+
+def read_license():
+    with codecs.open('ydiskarc/__init__.py', encoding='utf8') as f:
+        license_match = re.search(r"^__licence__ = ['\"]([^'\"]*)['\"]", f.read(), re.M)
+        if license_match:
+            return license_match.group(1)
+    return "MIT"
 
 
 class PyTest(TestCommand):
@@ -38,7 +64,8 @@ install_requires = [
     'typer',
     'pyyaml',
     'rich',
-    'requests'
+    'requests',
+    'tqdm'
 ]
 
 
@@ -67,17 +94,17 @@ def long_description():
 
 setup(
     name='ydiskarc',
-    version=ydiskarc.__version__,
-    description=ydiskarc.__doc__.strip(),
+    version=read_version(),
+    description='Command-line tool to backup public resources from Yandex.Disk',
     long_description=long_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/ruarxive/ydiskarc/',
     download_url='https://github.com/ruarxive/ydiskarc/',
     packages=find_packages(exclude=('tests', 'tests.*')),
     include_package_data=True,
-    author=ydiskarc.__author__,
+    author=read_author(),
     author_email='ivan@begtin.tech',
-    license=ydiskarc.__licence__,
+    license=read_license(),
     entry_points={
         'console_scripts': [
             'ydiskarc = ydiskarc.__main__:main',
