@@ -1,0 +1,515 @@
+{
+  "path": "/",
+  "type": "dir",
+  "name": "Примеры",
+  "created": "2022-11-25T13:54:32+00:00",
+  "modified": "2022-11-25T13:54:32+00:00",
+  "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+  "public_url": "https://yadi.sk/d/4Z0GsDwfR4gkPA",
+  "_embedded": {
+    "path": "/",
+    "limit": 20,
+    "offset": 0,
+    "sort": "",
+    "total": 7,
+    "items": [
+      {
+        "path": "/Avia.pdf",
+        "type": "file",
+        "name": "Avia.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1729622,
+        "mime_type": "application/pdf",
+        "md5": "aba014aea0fff9d8ff042733937b1494",
+        "sha256": "6e3c6721f21e0ff01a00c6fa13ace1e63be38bae58126e0bb4fdb459b6a4887c",
+        "preview": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/97f3eab4a8a1164140b76119047b4c11c706fc290d468ce8fa1e4e35a501d3b5/69407f3b/SXGR2fq28bYRgYE-I33Pb964dU6eBCsSEXfaNYk4kdSErRIkBp8RqpjEzQxd_YJYUsWZ7MnHwDeF-1SjL1CNkQ%3D%3D?uid=0&filename=Avia.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:937b1815e5841734dfce2c0fa8c1a6444711c0d7a41aa46557b4167ff860302a",
+        "revision": 1669384533683085,
+        "comment_ids": {
+          "public_resource": "5112124:937b1815e5841734dfce2c0fa8c1a6444711c0d7a41aa46557b4167ff860302a",
+          "private_resource": "5112124:937b1815e5841734dfce2c0fa8c1a6444711c0d7a41aa46557b4167ff860302a"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/45b2417d3f1743f7e2ba6af5c7219de903f0ff321c7a2a8e1667db50419bf7c6/69407f3b/SXGR2fq28bYRgYE-I33Pb2W02lW74FPQhiN0J-hwydQaznnn35Og19qlbKHHiDlokS0DJF3DLmLu96oX3D-HHw%3D%3D?uid=0&filename=Avia.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1729622&hid=c1b9885d540bce143c384ad219869275&media_type=document&tknv=v3&etag=aba014aea0fff9d8ff042733937b1494"
+      },
+      {
+        "path": "/Ecology.pdf",
+        "type": "file",
+        "name": "Ecology.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1547379,
+        "mime_type": "application/pdf",
+        "md5": "4e5b1e6d501ae6b3a17c2c93d960ba94",
+        "sha256": "f2f8c1c6e740ed0156f8ed748e817a8c17d831c871403a98391648cf04e52034",
+        "preview": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8558dbf12e59754a1ed40f2857ba6e582bf01a69b8393c782e832b4ede719149/69407f3b/SXGR2fq28bYRgYE-I33Pbzt74hl_JbS_Lkzmo5YpyOeC70wZUt-dShqcRO67VuUm2B9ptp6qvcAtvQ4Vmvr7uw%3D%3D?uid=0&filename=Ecology.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:1b50926726c74b08a46e8091b3b9ca7c2fa1a39433df071a6695d8aa51e319dc",
+        "revision": 1669384533311492,
+        "comment_ids": {
+          "public_resource": "5112124:1b50926726c74b08a46e8091b3b9ca7c2fa1a39433df071a6695d8aa51e319dc",
+          "private_resource": "5112124:1b50926726c74b08a46e8091b3b9ca7c2fa1a39433df071a6695d8aa51e319dc"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/d7ee3a6fa0984d146e601b79b7f96f8c94ee16de25a5032aebf7b0b2c8169e77/69407f3b/SXGR2fq28bYRgYE-I33Pb-2bK3ZUYTiVK9X7Izhn43BtuP5KJm_nbwCtOIW6z2bS5P1KKa_Gj7fX3rIPVJ8sbw%3D%3D?uid=0&filename=Ecology.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1547379&hid=8d3609f0528836b59ee3e5d2fc5175d0&media_type=document&tknv=v3&etag=4e5b1e6d501ae6b3a17c2c93d960ba94"
+      },
+      {
+        "path": "/Education.pdf",
+        "type": "file",
+        "name": "Education.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1809954,
+        "mime_type": "application/pdf",
+        "md5": "044dc0d962043bdff00f0c08c20a9e5a",
+        "sha256": "7de1c5bac09df472d937293c30143c0497474aefaf54b18bb19bdec2ea545f3c",
+        "preview": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/9d3b3ce9dd7b136836616d89bd57a600fb32a1e34b09abe79f1428033500a9d9/69407f3b/SXGR2fq28bYRgYE-I33PbyaJDkSaEyF5E2BgLSa59XSn4NvCzRTgGj60tJ6NNJE5J8-vF02xxdWm2MI-dwQVpw%3D%3D?uid=0&filename=Education.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:19a510c4307e254c7b01212d61efa1b724fba10fc80dbcf015d1eb74366e8f99",
+        "revision": 1669384533681816,
+        "comment_ids": {
+          "public_resource": "5112124:19a510c4307e254c7b01212d61efa1b724fba10fc80dbcf015d1eb74366e8f99",
+          "private_resource": "5112124:19a510c4307e254c7b01212d61efa1b724fba10fc80dbcf015d1eb74366e8f99"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/38af0b00eb2a02e2cba5a1e4fe7917715090c30b3ec92f93462770d2fae2a10c/69407f3b/SXGR2fq28bYRgYE-I33Pb50-6mc-Y0HeJOLtLAUbQQasW08Q-ITVIwbAqrysus5k9w7vPT0kXuD5f8hYjhzgww%3D%3D?uid=0&filename=Education.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1809954&hid=72970aa2f5297ca3503f88e6d3c5e6b2&media_type=document&tknv=v3&etag=044dc0d962043bdff00f0c08c20a9e5a"
+      },
+      {
+        "path": "/Finance.pdf",
+        "type": "file",
+        "name": "Finance.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1602521,
+        "mime_type": "application/pdf",
+        "md5": "e0f966c4eb644de5063d3731e72861cb",
+        "sha256": "ea17896e28f2415aa83e7e2e851fa66b5acc52db7a064d811deb1da4ec70bd82",
+        "preview": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/b906aa80cb3d0b1cd7c35a89ca9b851f2bdcfbdb96c2b4888097e2bede05232b/69407f3b/SXGR2fq28bYRgYE-I33Pb0Qv7pgfIHmDgw6i9yihYP6bZBjLG5TPkVxyQsCSR9QLaTrfk4wKJgE1MxRL00OBww%3D%3D?uid=0&filename=Finance.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:735ceffe79e663e3482f11bfbb7032f5f1427d2492245bb6ee17a78a2d060c22",
+        "revision": 1669384533439755,
+        "comment_ids": {
+          "public_resource": "5112124:735ceffe79e663e3482f11bfbb7032f5f1427d2492245bb6ee17a78a2d060c22",
+          "private_resource": "5112124:735ceffe79e663e3482f11bfbb7032f5f1427d2492245bb6ee17a78a2d060c22"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/d4a6f21f5e34fdedc0bd00b0ce9dbd7190f00184bed9884561afb58720366be6/69407f3b/SXGR2fq28bYRgYE-I33Pb2pkZ-o5C0-5l6p7GurHpD2wb3nRriTQ2gKkMQTat7PqhMnZm_y3UhMnPD95A9i8pg%3D%3D?uid=0&filename=Finance.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1602521&hid=40966c749959caf75fe05617090ff69e&media_type=document&tknv=v3&etag=e0f966c4eb644de5063d3731e72861cb"
+      },
+      {
+        "path": "/Heath.pdf",
+        "type": "file",
+        "name": "Heath.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1793468,
+        "mime_type": "application/pdf",
+        "md5": "45c190ffd0a7a562868bcfa16619065d",
+        "sha256": "19fe22b2aa0c3dd49a5bdffc3d17fc015a6978b85b2029a6c8b63349411cf777",
+        "preview": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/aa5792cf8a1b461cbf3fe1951809e22f526d152d97d36cdb77f2bbd5663d884a/69407f3b/21EmRBKw72t2LspiKlyWyF7RabkGSgreEjoNYYa3X3TDyuanWY37nVfBSihuCcv33fM8_NwDl-6JKtwDioeLpw%3D%3D?uid=0&filename=Heath.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:595e6ba4b331e4a085558374a1778a9bdd9f0cfab28609dce7d3b17ab50d83db",
+        "revision": 1669384533689075,
+        "comment_ids": {
+          "public_resource": "5112124:595e6ba4b331e4a085558374a1778a9bdd9f0cfab28609dce7d3b17ab50d83db",
+          "private_resource": "5112124:595e6ba4b331e4a085558374a1778a9bdd9f0cfab28609dce7d3b17ab50d83db"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/213fe7fbcd95a7fbd78fd08ec60b24de35c21cd8c2d3f12629a83a242f0079ac/69407f3b/21EmRBKw72t2LspiKlyWyMdVnaBe4sbYcqKISt1H4IciYfEqNaZFlCrQZP3YzYQ4kn0UgIYDHJiEfvAFij5NOw%3D%3D?uid=0&filename=Heath.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1793468&hid=2c18e20fc4b7d293b822bc14e539ba7c&media_type=document&tknv=v3&etag=45c190ffd0a7a562868bcfa16619065d"
+      },
+      {
+        "path": "/Law.pdf",
+        "type": "file",
+        "name": "Law.pdf",
+        "created": "2022-11-25T13:55:33+00:00",
+        "modified": "2022-11-25T13:55:33+00:00",
+        "size": 1125676,
+        "mime_type": "application/pdf",
+        "md5": "b9d76a7f2df3e2ad63c530db0944d527",
+        "sha256": "fc95464713b19f8f1da7f78fc9d03cd7761d24de6218e5d1b8948f2cd29ee99e",
+        "preview": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/970fc2dd2a372477c9e99ef54fb1f252bc5f46ce23d1efaf40f7aaf7aaa387b5/69407f3b/21EmRBKw72t2LspiKlyWyIgLbxs0q4rvA7byH4DpMlv3FY1Yf8fENhwtaVKxWF2fH8eauPDea-CAjdUgdxZXWw%3D%3D?uid=0&filename=Law.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:2511f8f42e884a95d7da82cdd55fc1f4c0df868468a129932e68fc282365370e",
+        "revision": 1669384533798548,
+        "comment_ids": {
+          "public_resource": "5112124:2511f8f42e884a95d7da82cdd55fc1f4c0df868468a129932e68fc282365370e",
+          "private_resource": "5112124:2511f8f42e884a95d7da82cdd55fc1f4c0df868468a129932e68fc282365370e"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/8e16fc139afeca63248b101ac3baf37405275a86f8e863dde1a90468ba36df74/69407f3b/21EmRBKw72t2LspiKlyWyE1mz0ZJu8ylvmNwmSXQvTcbU5wn-77I3chrUswWZJtHJKyLGuWO3AqnmvFm5lr1qA%3D%3D?uid=0&filename=Law.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1125676&hid=817842d0f6c80236209137ea99a08ad4&media_type=document&tknv=v3&etag=b9d76a7f2df3e2ad63c530db0944d527"
+      },
+      {
+        "path": "/Oil.pdf",
+        "type": "file",
+        "name": "Oil.pdf",
+        "created": "2022-11-25T13:55:34+00:00",
+        "modified": "2022-11-25T13:55:34+00:00",
+        "size": 1302272,
+        "mime_type": "application/pdf",
+        "md5": "0a0e6b3bc552c708aa27b3d8598f39d4",
+        "sha256": "8dd53113b36cebec9e6b610ad249570d206411208eafeefa4065bc2e62aa5e2e",
+        "preview": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+        "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag==",
+        "media_type": "document",
+        "sizes": [
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3",
+            "name": "DEFAULT"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXS&crop=0",
+            "name": "XXXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXS&crop=0",
+            "name": "XXS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XS&crop=0",
+            "name": "XS"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "S"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=M&crop=0",
+            "name": "M"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=L&crop=0",
+            "name": "L"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XL&crop=0",
+            "name": "XL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXL&crop=0",
+            "name": "XXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=XXXL&crop=0",
+            "name": "XXXL"
+          },
+          {
+            "url": "https://downloader.disk.yandex.ru/preview/8e3929a181ed9cd23a7d7eeb4f6312ae0bf6a4a7ae09e73b6093c002da04a515/69407f3b/SXGR2fq28bYRgYE-I33Pb3cnBYN1XKTGllZLSGFufPq_LQn_cyxkwYzxTfSINj3LpHH0_bHoFUcFXpCTixvsMA%3D%3D?uid=0&filename=Oil.pdf&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v3&size=S&crop=0",
+            "name": "C"
+          }
+        ],
+        "resource_id": "5112124:1907bc6e661eae65313ee7592faade0a6db42bf83e4cd6f7ac620d65daae6969",
+        "revision": 1669384534916557,
+        "comment_ids": {
+          "public_resource": "5112124:1907bc6e661eae65313ee7592faade0a6db42bf83e4cd6f7ac620d65daae6969",
+          "private_resource": "5112124:1907bc6e661eae65313ee7592faade0a6db42bf83e4cd6f7ac620d65daae6969"
+        },
+        "exif": {},
+        "antivirus_status": "clean",
+        "file": "https://downloader.disk.yandex.ru/disk/e69efb2706b0d1d93e5a3040ed763cc44fcf2e7c976b862f458ed45a20527687/69407f3b/SXGR2fq28bYRgYE-I33Pb501Gz1QO-bgCtdCyv_taYSgwxrM6GrmDRYORkZjsMqvBwbcmjfc9DeGS7fPGEYpkg%3D%3D?uid=0&filename=Oil.pdf&disposition=attachment&hash=&limit=0&content_type=application%2Fpdf&owner_uid=0&fsize=1302272&hid=2c3a813faf038fa25845eab4f56ee7bd&media_type=document&tknv=v3&etag=0a0e6b3bc552c708aa27b3d8598f39d4"
+      }
+    ],
+    "public_key": "5Yj0swSPkg/eOi1CRfXpsPOc2ImjQSxEsI9NcgvVYZq+UwZAHcNQLlgDSiytpjBkq/J6bpmRyOJonT3VoXnDag=="
+  },
+  "resource_id": "5112124:b28990d27d4ac67e984b22bdf3f41180a07f63f57d2db6b06e78202f2f48c782",
+  "revision": 1765814611261919,
+  "comment_ids": {
+    "public_resource": "5112124:b28990d27d4ac67e984b22bdf3f41180a07f63f57d2db6b06e78202f2f48c782",
+    "private_resource": "5112124:b28990d27d4ac67e984b22bdf3f41180a07f63f57d2db6b06e78202f2f48c782"
+  },
+  "exif": {},
+  "views_count": 5,
+  "owner": {
+    "uid": "5112124",
+    "login": "ibegtin",
+    "display_name": "Иван Бегтин"
+  }
+}

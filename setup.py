@@ -35,10 +35,10 @@ tests_require = [
 
 
 install_requires = [
-    'lxml',
-    'click',
+    'typer',
     'pyyaml',
-    'rich'
+    'rich',
+    'requests'
 ]
 
 
@@ -61,7 +61,7 @@ extras_require = {
 
 
 def long_description():
-    with codecs.open('README.rst', encoding='utf8') as f:
+    with codecs.open('README.md', encoding='utf8') as f:
         return f.read()
 
 
@@ -70,6 +70,7 @@ setup(
     version=ydiskarc.__version__,
     description=ydiskarc.__doc__.strip(),
     long_description=long_description(),
+    long_description_content_type='text/markdown',
     url='https://github.com/ruarxive/ydiskarc/',
     download_url='https://github.com/ruarxive/ydiskarc/',
     packages=find_packages(exclude=('tests', 'tests.*')),

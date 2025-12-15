@@ -3,6 +3,6 @@ yydiskarc: a command-line tool to backup documents from Yandex.Disk public resou
 
 """
 
-__version__ = '1.0.1'
-__author__ = 'Ivan Begtin'
-__licence__ = 'MIT'
+__version__ = "1.1.0"
+__author__ = "Ivan Begtin"
+__licence__ = "MIT"

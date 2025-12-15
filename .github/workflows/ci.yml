@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11']
+        exclude:
+          # Python 3.6 not available on latest macOS
+          - os: macos-latest
+            python-version: '3.6'
+          # Python 3.6 not available on latest Windows
+          - os: windows-latest
+            python-version: '3.6'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r requirements-dev.txt
+          pip install -e .
+      
+      - name: Run tests
+        run: pytest
+      
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 ydiskarc --max-line-length=100 --extend-ignore=E203,W503 || true
+      
+      - name: Type check with mypy (optional)
+        run: |
+          pip install mypy || true
+          mypy ydiskarc --ignore-missing-imports || true
+        continue-on-error: true
+      
+      - name: Check code formatting with black (optional)
+        run: |
+          pip install black || true
+          black --check --line-length=100 ydiskarc || true
+        continue-on-error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black mypy
+      
+      - name: Run flake8
+        run: flake8 ydiskarc tests --max-line-length=100 --extend-ignore=E203,W503
+      
+      - name: Check code formatting
+        run: black --check --line-length=100 ydiskarc tests
+      
+      - name: Type check
+        run: mypy ydiskarc --ignore-missing-imports || true
