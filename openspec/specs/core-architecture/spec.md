@@ -1,7 +1,13 @@
 # core-architecture Specification
 
 ## Purpose
-TBD - created by archiving change refactor-architecture. Update Purpose after archive.
+
+Defines the high-level structure of the ydiskarc codebase: how the CLI
+(`core.py`) delegates to focused modules (`client.py`, `downloader.py`,
+`models.py`, `config.py`, `constants.py`), the safety invariants that must
+hold (`.part` files, path traversal containment, package-scoped logging), and
+the public API surface (`__all__` declarations).
+
 ## Requirements
 ### Requirement: Modular Core Logic
 The application logic MUST be split into single-responsibility modules rather than a monolithic `processor.py` file.

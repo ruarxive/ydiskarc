@@ -1,0 +1,39 @@
+# Dependabot configuration for ydiskarc.
+# See openspec/changes/add-dependabot.
+
+version: 2
+
+updates:
+  # Track Python dependencies declared in requirements*.txt.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Moscow"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+    groups:
+      production:
+        patterns:
+          - "requirements.txt"
+      development:
+        patterns:
+          - "requirements-dev.txt"
+          - "pyproject.toml"
+
+  # Keep GitHub Actions versions up to date.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Moscow"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"

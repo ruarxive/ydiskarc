@@ -1,5 +1,7 @@
 tox
 pytest
+pytest-cov>=5.0.0
+pip-audit>=2.7.0
 docutils
 wheel
 twine

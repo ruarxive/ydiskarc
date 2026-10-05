@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
+__all__ = ["ResourceItem", "ResourceList", "ResourceInfo"]
+
 
 @dataclass
 class ResourceItem:

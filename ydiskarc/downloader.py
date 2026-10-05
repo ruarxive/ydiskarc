@@ -2,13 +2,18 @@ import logging
 import os
 import re
 import subprocess
-from typing import Dict, Optional, Any
+import urllib.parse
+from email.message import EmailMessage as _EmailMessage  # noqa: F401
+from typing import Any, Dict, Optional
 
 import requests
 from tqdm import tqdm
 
-from .config import config
+from . import constants
 from .client import YandexDiskClient
+from .config import config
+
+__all__ = ["ResourceDownloader", "format_size", "parse_content_disposition", "sanitize_filename"]
 
 
 def format_size(size_bytes: int) -> str:
@@ -21,12 +26,100 @@ def format_size(size_bytes: int) -> str:
     return f"{size:.2f} PB"
 
 
+# RFC 5987 ``ext-value``: ``charset'language'value`` with optional percent-encoding.
+_FILENAME_STAR_RE = re.compile(
+    r"""filename\*\s*=\s*          # parameter name
+        (?P<charset>[A-Za-z0-9\-]+)' # charset
+        (?P<lang>[A-Za-z0-9\-]*)'    # optional language tag
+        (?P<value>[^;]+)              # percent-encoded value
+    """,
+    re.VERBOSE,
+)
+
+
+def parse_content_disposition(header_value: Optional[str]) -> Optional[str]:
+    """Parse a ``Content-Disposition`` header value and return the filename.
+
+    Follows RFC 6266 / 5987: when both ``filename=`` and ``filename*=`` are
+    present, ``filename*=`` takes precedence. The encoding declared in
+    ``filename*`` is honored; default is UTF-8.
+
+    Args:
+        header_value: The raw ``Content-Disposition`` header value (without
+            the field name), or ``None`` if the header is missing.
+
+    Returns:
+        The filename as declared by the server, or ``None`` if no filename
+        parameter is present.
+    """
+    if not header_value:
+        return None
+
+    # First, look for ``filename*=`` (RFC 5987 extended encoding).
+    m = _FILENAME_STAR_RE.search(header_value)
+    if m:
+        charset = m.group("charset") or "utf-8"
+        encoded_value = m.group("value").strip().strip('"').strip("'")
+        try:
+            return urllib.parse.unquote(encoded_value, encoding=charset, errors="replace")
+        except LookupError:
+            return urllib.parse.unquote(encoded_value, errors="replace")
+
+    # Otherwise fall back to ``filename=`` via email parser.
+    msg = _EmailMessage()
+    msg["Content-Disposition"] = header_value
+    return msg.get_filename()
+
+
+def sanitize_filename(name: str) -> str:
+    """Sanitize a server-supplied filename for use as a local path component.
+
+    Strips CR/LF/NUL and other control characters, replaces path separators
+    with ``_``, removes surrounding whitespace and quotes. Returns an empty
+    string if nothing usable remains (callers should fall back to a default).
+    """
+    if not name:
+        return ""
+    # Remove control chars (incl. CR/LF, NUL, tab).
+    cleaned = "".join(ch for ch in name if 32 <= ord(ch) != 127 or ch == " ")
+    # Drop surrounding quotes.
+    cleaned = cleaned.strip().strip('"').strip("'")
+    # Replace path separators with underscore.
+    cleaned = cleaned.replace("/", "_").replace("\\", "_")
+    # Drop anything still left that looks dangerous (NUL).
+    cleaned = cleaned.replace("\x00", "")
+    return cleaned.strip()
+
+
 class ResourceDownloader:
     """Handles file downloads with tracking, resuming, and safety (.part files)."""
 
     def __init__(self, client: YandexDiskClient, verbose: bool = False):
         self.client = client
         self.verbose = verbose
+
+    def _probe(
+        self,
+        url: str,
+        params: Optional[Dict[str, Any]],
+        headers: Dict[str, str],
+        stream: bool,
+    ) -> requests.Response:
+        """Issue a probe request and reissue once on 429.
+
+        Thin wrapper around :meth:`YandexDiskClient._request_with_backoff`
+        that fixes ``stream`` and ``verify`` semantics. Centralises the rate
+        limit retry pattern that previously appeared twice in :meth:`get_file`.
+        """
+        return self.client._request_with_backoff(
+            "GET",
+            url,
+            params=params,
+            headers=headers,
+            stream=stream,
+            verify=bool(config.verify) if config.verify is not None else True,
+            timeout=config.timeout,
+        )
 
     def get_file(
         self,
@@ -44,29 +137,10 @@ class ResourceDownloader:
         Download a file from a URL with progress tracking and resume support.
         Downloads are written to a `.part` extension during the process.
         """
-        session = self.client.session
         headers: Dict[str, str] = {}
 
         try:
-            page = session.get(
-                url,
-                params=params,
-                headers=headers,
-                stream=True,
-                verify=True,
-                timeout=config.timeout,
-            )
-            if page.status_code == 429:
-                self.client.handle_rate_limit(page)
-                page = session.get(
-                    url,
-                    params=params,
-                    headers=headers,
-                    stream=True,
-                    verify=True,
-                    timeout=config.timeout,
-                )
-            page.raise_for_status()
+            page = self._probe(url, params, headers, stream=True)
         except requests.exceptions.RequestException as e:
             if self.verbose:
                 logging.error(f"Failed to download file from {url}: {e}")
@@ -74,17 +148,10 @@ class ResourceDownloader:
 
         # Determine target filename
         if filename is None:
-            if "Content-Disposition" in page.headers.keys():
-                try:
-                    fname = (
-                        re.findall("filename=(.+)", page.headers["Content-Disposition"])[0]
-                        .strip('"')
-                        .encode("latin-1")
-                        .decode("utf-8")
-                    )
-                except (IndexError, UnicodeDecodeError):
-                    fname = url.split("/")[-1]
-            else:
+            cd = page.headers.get(constants.HEADER_CONTENT_DISPOSITION)
+            parsed = parse_content_disposition(cd) if cd else None
+            fname = sanitize_filename(parsed) if parsed else ""
+            if not fname:
                 fname = url.split("/")[-1]
             if filepath:
                 filename = os.path.join(filepath, fname)
@@ -94,7 +161,7 @@ class ResourceDownloader:
             filename = os.path.join(filepath, filename)
 
         # Temporary file for downloading
-        part_filename = f"{filename}.part"
+        part_filename = f"{filename}{constants.PART_SUFFIX}"
 
         # Check for existing file or partial file
         existing_size = 0
@@ -106,30 +173,12 @@ class ResourceDownloader:
 
         if existing_size > 0:
             page.close()
-            headers["Range"] = f"bytes={existing_size}-"
+            headers[constants.HEADER_RANGE] = f"bytes={existing_size}-"
             if self.verbose:
                 logging.info(f"Resuming download from byte {existing_size}")
 
             try:
-                page = session.get(
-                    url,
-                    params=params,
-                    headers=headers,
-                    stream=True,
-                    verify=True,
-                    timeout=config.timeout,
-                )
-                if page.status_code == 429:
-                    self.client.handle_rate_limit(page)
-                    page = session.get(
-                        url,
-                        params=params,
-                        headers=headers,
-                        stream=True,
-                        verify=True,
-                        timeout=config.timeout,
-                    )
-                page.raise_for_status()
+                page = self._probe(url, params, headers, stream=True)
             except requests.exceptions.RequestException as e:
                 if self.verbose:
                     logging.error(f"Failed to resume download from {url}: {e}")

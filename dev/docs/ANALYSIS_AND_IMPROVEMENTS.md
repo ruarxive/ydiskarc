@@ -1,833 +1,467 @@
 # Repository Analysis and Improvement Suggestions
 
-**Last Updated:** 2025-01-27 (Comprehensive Code Review - Updated)
+**Last Updated:** 2026-10-05 (Comprehensive Code Review — Post-Refactor Audit)
 
 ## Executive Summary
 
-This document provides a comprehensive analysis of the `ydiskarc` repository with actionable suggestions for improvement. The project is a command-line tool for backing up public resources from Yandex.Disk using the Typer CLI framework. The codebase has been significantly improved since initial analysis, with many security issues, error handling gaps, and infrastructure concerns addressed. The repository now has a solid foundation with tests, CI/CD, modern packaging, and many best practices in place.
+`ydiskarc` is a small (~520 LOC), well-structured Python 3.9+ CLI for backing up public Yandex.Disk resources, built on Typer, `requests`, and `tqdm`. The codebase was recently refactored (see `openspec/changes/archive/2026-03-08-refactor-architecture/`) from a monolithic `processor.py` into focused modules (`client.py`, `downloader.py`, `models.py`, `config.py`), and it shows: responsibilities are clear, tests pass cleanly (20/20), pre-commit and CI are in place, and modern practices are followed.
 
-### 🔍 New Findings (2025-01-27 Update)
+This audit confirms the refactor landed well and identifies **remaining issues** that did not exist in the prior analysis or that survived it. Categorized counts: **3 high-priority bugs**, **6 medium-priority quality/security gaps**, **5 low-priority refactors**, and **7 enhancement ideas**.
 
-This comprehensive review identified **11 new medium-priority issues** and **4 low-priority enhancements**:
+### Headline Findings
 
-**Medium Priority:**
-1. **Code Duplication** - Rate limit handling pattern repeated 5+ times
-2. **Naming Inconsistency** - `enableVerbose()` should be `enable_verbose()` per PEP 8
-3. **Missing Coverage Reporting** - CI doesn't enforce or report test coverage
-4. **Packaging Duplication** - Both `setup.py` and `pyproject.toml` exist with inconsistencies
-5. **Path Traversal Risk** - Insufficient path validation in directory operations
-6. **Missing Module Exports** - No `__all__` declarations for public API
-7. **CI Linting Ignored** - Linting failures don't block merges (`|| true`)
-8. **Incomplete Unicode Tests** - Placeholder test for Unicode filenames not implemented
-9. **Magic Strings** - Hardcoded strings should be extracted to constants
-10. **Logging Configuration Issue** - `logging.basicConfig()` called twice, second call ineffective
-11. **Resource Management** - HTTP sessions not properly closed, manual `page.close()` calls
-
-**Low Priority:**
-- OAuth key storage security improvements
-- Dependency version constraints in setup.py
-- CI/CD automation enhancements
-- Additional code organization improvements
+| # | Severity | Finding |
+|---|----------|---------|
+| 1 | 🔴 High | `setup_logging(verbose=False)` calls `logging.disable(CRITICAL)`, a process-global sticky switch — once set, no later logger can output, including within the same CLI run for any module-level warning |
+| 2 | 🔴 High | `setup_logging(verbose=True)` uses `logging.basicConfig(...)`, which is a **no-op** once any other code (even transitively) has configured logging — verbose mode is silently broken on real-world installations |
+| 3 | 🔴 High | **Path-traversal risk** in `yd_get_and_store_dir` / `scan_directory_for_stats` — API-supplied `path` values are joined into `os.path.join(output, *parts)` without normalization or `..` check, allowing writes outside the output directory if the upstream API returns hostile names |
+| 4 | 🟡 Med | Rate-limit-retry block is duplicated three times across `client.py` and `downloader.py` |
+| 5 | 🟡 Med | No `__all__` in any package — public API surface is undocumented |
+| 6 | 🟡 Med | `mypy || true` in `.github/workflows/ci.yml:84` — typing regressions do not fail CI |
+| 7 | 🟡 Med | `tox.ini` pins `py38` (EOL) and `.pre-commit-config.yaml` says `--python-version=3.6`, both contradicting `pyproject.toml`'s `>=3.9` |
+| 8 | 🟡 Med | `Project.configure()` (writes OAuth key to `.ydiskarc`) is **not exposed via any CLI command** — dead code, also stores OAuth plaintext with no `chmod 600` |
+| 9 | 🟡 Med | Tests do not exercise the resume path, the `aria2` branch, rate-limit retry, or `yandex.com` URLs (only `.ru` is tested) |
 
 ---
 
-## ✅ Issues Already Fixed
+## 1. Architecture Overview
 
-The following issues mentioned in previous analyses have been **resolved**:
-
-1. ✅ **Security: YAML Loading** - Uses `yaml.safe_load()` (line 472 in processor.py)
-2. ✅ **Security: Command Injection** - Uses `subprocess.run()` instead of `os.system()` (lines 233-243)
-3. ✅ **Error Handling: HTTP Requests** - Comprehensive error handling with `raise_for_status()` and try/except blocks
-4. ✅ **Error Handling: File Operations** - Proper error handling with context managers and exception handling
-5. ✅ **Progress Bar** - Uses `with Progress()` context manager (line 191)
-6. ✅ **CLI Framework** - Migrated from Click to Typer (modern, type-safe CLI framework)
-7. ✅ **Exit Codes** - Proper exit code handling in `__main__.py` (lines 20-31)
-8. ✅ **Docstrings** - Functions have proper docstrings with Args/Raises sections
-9. ✅ **Test Suite** - Comprehensive test suite exists (`tests/test_core.py`, `tests/test_processor.py`, `tests/conftest.py`)
-10. ✅ **CI/CD Pipeline** - GitHub Actions workflow exists (`.github/workflows/ci.yml`)
-11. ✅ **Pre-commit Hooks** - Pre-commit configuration exists (`.pre-commit-config.yaml`)
-12. ✅ **Modern Packaging** - `pyproject.toml` exists with proper configuration
-13. ✅ **Version Command** - Version command implemented (core.py lines 129-132)
-14. ✅ **User-Agent String** - Proper User-Agent via config module (config.py)
-15. ✅ **Retry Logic** - Retry logic implemented (`create_session_with_retries()`)
-16. ✅ **Resume Support** - Resume functionality implemented in `get_file()` function
-17. ✅ **Rate Limiting** - Rate limiting handling implemented (`handle_rate_limit()`)
-18. ✅ **Configuration Management** - Centralized config module (`config.py`)
-19. ✅ **Chunk Size** - Proper chunk size constant (32 * 1024 in config.py)
-20. ✅ **Coverage Config** - `.coveragerc` properly configured (source = ydiskarc)
-
----
-
-## 🔴 Critical Issues (Remaining)
-
-### ✅ All Critical Issues Fixed!
-
-The following critical issues have been **resolved**:
-
-1. ✅ **Missing Import in Test Configuration** - Fixed: Added `import pytest` to `conftest.py`
-2. ✅ **Test Coverage Gaps** - Fixed: Added comprehensive edge case tests including:
-   - Error handling for network timeouts
-   - URL validation tests
-   - File system errors (permissions, I/O errors)
-   - Partial file resume scenarios
-   - Rate limiting retry scenarios
-   - Invalid API responses
-   - Missing API response keys
-
----
-
-## 🟡 Important Issues
-
-### ✅ Most Important Issues Fixed!
-
-The following important issues have been **resolved**:
-
-1. ✅ **Type Hints Completeness** - Fixed: Added return type hints to all functions (`enableVerbose()`, `cli()`, `main()`, etc.)
-2. ✅ **Error Message Consistency** - Fixed: Improved error messages in `processor.py` to be more user-friendly
-3. ✅ **URL Validation** - Fixed: Added `validate_yandex_url()` function and integrated it into CLI commands
-
-### Remaining Important Issues
-
-### 1. **Code Duplication: Rate Limit Handling**
-
-#### Issue: Repeated Rate Limit Handling Pattern
-**Location:** `ydiskarc/cmds/processor.py` (multiple locations)
-
-**Current State:**
-- Rate limit handling code is duplicated in multiple places:
-  - Lines 128-134 in `get_file()`
-  - Lines 187-192 in `get_file()` (resume section)
-  - Lines 303-305 in `yd_get_full()`
-  - Lines 322-324 in `yd_get_full()`
-  - Lines 380-386 in `yd_get_and_store_dir()`
-
-**Problem:**
-```python
-# This pattern is repeated multiple times:
-if resp.status_code == 429:
-    handle_rate_limit(resp)
-    resp = session.get(...)  # Retry logic duplicated
-```
-
-**Suggestion:** Create a helper function to wrap API calls with automatic rate limit handling:
-```python
-def api_get_with_rate_limit(session: requests.Session, url: str, **kwargs) -> requests.Response:
-    """Make GET request with automatic rate limit handling."""
-    resp = session.get(url, **kwargs)
-    if resp.status_code == 429:
-        handle_rate_limit(resp)
-        resp = session.get(url, **kwargs)
-    resp.raise_for_status()
-    return resp
-```
-
-**Benefit:** Reduces code duplication, improves maintainability, ensures consistent behavior.
-
-**Priority:** 🟡 **MEDIUM** - Code quality and maintainability
-
-**Code Example:**
-```python
-# Current (duplicated in 5+ places):
-resp = session.get(YD_API, params={'public_key': url}, timeout=config.timeout)
-if resp.status_code == 429:
-    handle_rate_limit(resp)
-    resp = session.get(YD_API, params={'public_key': url}, timeout=config.timeout)
-resp.raise_for_status()
-
-# Suggested refactor:
-def api_get_with_rate_limit(session: requests.Session, url: str, **kwargs) -> requests.Response:
-    """Make GET request with automatic rate limit handling."""
-    resp = session.get(url, **kwargs)
-    if resp.status_code == 429:
-        handle_rate_limit(resp)
-        resp = session.get(url, **kwargs)
-    resp.raise_for_status()
-    return resp
-
-# Usage:
-resp = api_get_with_rate_limit(session, YD_API, params={'public_key': url}, timeout=config.timeout)
-```
-
----
-
-### 2. **Inconsistent Naming Conventions**
-
-#### Issue: Mixed Naming Styles
-**Location:** `ydiskarc/core.py`, `ydiskarc/cmds/processor.py`
-
-**Current State:**
-- `enableVerbose()` uses camelCase (line 24 in core.py)
-- Most other functions use snake_case
-- Python convention is snake_case for functions
-
-**Suggestion:** Rename `enableVerbose()` to `enable_verbose()` for consistency with PEP 8.
-
-**Priority:** 🟡 **MEDIUM** - Code style consistency
-
-**Code Example:**
-```python
-# Current:
-def enableVerbose() -> None:  # camelCase - inconsistent
-    """Enable verbose logging mode."""
-    ...
-
-# Suggested:
-def enable_verbose() -> None:  # snake_case - PEP 8 compliant
-    """Enable verbose logging mode."""
-    ...
-```
-
----
-
-### 3. **Missing Test Coverage Reporting in CI**
-
-#### Issue: No Coverage Enforcement
-**Location:** `.github/workflows/ci.yml`
-
-**Current State:**
-- Tests run but coverage is not reported or enforced
-- No coverage threshold set
-- Coverage reports not uploaded to services like Codecov
-
-**Suggestion:**
-- Add `pytest-cov` to requirements-dev.txt
-- Add coverage reporting to CI:
-  ```yaml
-  - name: Run tests with coverage
-    run: pytest --cov=ydiskarc --cov-report=xml --cov-report=term
-  
-  - name: Upload coverage to Codecov
-    uses: codecov/codecov-action@v3
-  ```
-- Set minimum coverage threshold (e.g., 80%)
-
-**Priority:** 🟡 **MEDIUM** - Quality assurance
-
----
-
-### 4. **Dependency Management: Dual Packaging Files**
-
-#### Issue: Both `setup.py` and `pyproject.toml` Exist
-**Location:** Root directory
-
-**Current State:**
-- Both `setup.py` and `pyproject.toml` define package metadata
-- `setup.py` has outdated classifiers (BSD License vs MIT in pyproject.toml)
-- `setup.py` lacks version constraints on dependencies
-- Risk of inconsistency between the two files
-
-**Suggestion:**
-- **Option A (Recommended):** Remove `setup.py` and use only `pyproject.toml` (PEP 517/518 standard)
-- **Option B:** Keep `setup.py` minimal (only for legacy compatibility) and sync metadata from `pyproject.toml`
-- Ensure version constraints match between files
-- Update classifiers in `setup.py` to match `pyproject.toml` (MIT License)
-
-**Priority:** 🟡 **MEDIUM** - Modern Python packaging best practices
-
----
-
-### 5. **Security: Path Traversal Vulnerability**
-
-#### Issue: Insufficient Path Validation
-**Location:** `ydiskarc/cmds/processor.py` - `yd_get_and_store_dir()`
-
-**Current State:**
-- Path construction uses `os.path.join()` without validation
-- User-controlled `path` parameter from API response could contain `../` sequences
-- No sanitization of path components
-
-**Example Risk:**
-```python
-# If API returns path = "../../etc/passwd"
-arr.extend([i.rstrip() for i in path.split('/') if i.strip()])
-dir_path = os.path.join(*arr)  # Could escape output directory
-```
-
-**Suggestion:**
-- Validate and sanitize path components
-- Use `os.path.normpath()` and check for directory traversal attempts
-- Add path validation function:
-  ```python
-  def sanitize_path(path: str, base_dir: str) -> str:
-      """Sanitize path to prevent directory traversal."""
-      normalized = os.path.normpath(path)
-      if normalized.startswith('..') or os.path.isabs(normalized):
-          raise ValueError(f"Invalid path: {path}")
-      return os.path.join(base_dir, normalized)
-  ```
-
-**Priority:** 🟡 **MEDIUM** - Security hardening
-
-**Code Example:**
-```python
-# Current (vulnerable):
-arr = [output, ]
-arr.extend([i.rstrip() for i in path.split('/') if i.strip()])
-dir_path = os.path.join(*arr)  # path could contain "../"
-
-# Suggested fix:
-def sanitize_path(path: str, base_dir: str) -> str:
-    """Sanitize path to prevent directory traversal."""
-    # Remove any leading/trailing whitespace
-    path = path.strip()
-    # Normalize the path
-    normalized = os.path.normpath(path)
-    # Check for directory traversal attempts
-    if normalized.startswith('..') or os.path.isabs(normalized):
-        raise ValueError(f"Invalid path detected: {path}")
-    # Join with base directory
-    full_path = os.path.join(base_dir, normalized)
-    # Ensure the result is still within base directory
-    if not os.path.commonpath([base_dir, full_path]) == base_dir:
-        raise ValueError(f"Path traversal detected: {path}")
-    return full_path
-```
-
----
-
-### 6. **Missing Module Exports (`__all__`)**
-
-#### Issue: No Explicit Public API Definition
-**Location:** `ydiskarc/__init__.py`, `ydiskarc/cmds/__init__.py`
-
-**Current State:**
-- Modules don't define `__all__` to explicitly declare public API
-- Makes it unclear what should be imported by users
-
-**Suggestion:** Add `__all__` to modules:
-```python
-# ydiskarc/__init__.py
-__all__ = ['__version__', '__author__', '__licence__']
-
-# ydiskarc/cmds/__init__.py
-__all__ = ['Project', 'validate_yandex_url']
-```
-
-**Priority:** 🟡 **MEDIUM** - API clarity and best practices
-
----
-
-### 7. **CI/CD: Linting Failures Ignored**
-
-#### Issue: Linting Errors Don't Fail CI
-**Location:** `.github/workflows/ci.yml` (lines 54, 58, 65)
-
-**Current State:**
-- Flake8, mypy, and black checks use `|| true` to prevent failures
-- Linting errors don't block merges
-- Code quality issues can accumulate
-
-**Suggestion:**
-- Remove `|| true` from linting steps
-- Make linting failures block PRs
-- Or create separate "lint" job that can fail without blocking tests
-- Consider using `--max-complexity` for flake8
-
-**Priority:** 🟡 **MEDIUM** - Code quality enforcement
-
----
-
-### 8. **Unicode Filename Handling Incomplete**
-
-#### Issue: Placeholder Test for Unicode Filenames
-**Location:** `tests/test_processor.py` (line 479-483)
-
-**Current State:**
-- Test exists but is just a placeholder (`pass`)
-- No actual Unicode filename handling test
-- Content-Disposition header parsing may not handle all Unicode cases correctly
-
-**Suggestion:**
-- Implement actual Unicode filename test cases
-- Test with various Unicode characters (CJK, emoji, accented characters)
-- Verify Content-Disposition header parsing handles RFC 5987 encoding
-- Test filename sanitization for filesystem compatibility
-
-**Priority:** 🟡 **MEDIUM** - Internationalization support
-
----
-
-### 9. **Code Organization** (Optional Enhancement)
-
-#### Issue: Large Functions in `processor.py`
-**Location:** `ydiskarc/cmds/processor.py`
-
-**Current State:**
-- `get_file()` function is ~200 lines (could be split)
-- `yd_get_and_store_dir()` function is ~120 lines
-- Some functions handle multiple responsibilities
-
-**Suggestion:** Consider splitting into focused modules:
 ```
 ydiskarc/
-  ├── api/
-  │   ├── __init__.py
-  │   └── yandex.py      # API client wrapper
-  ├── downloader.py      # File download logic
-  ├── metadata.py        # Metadata handling
-  └── cmds/
-      └── processor.py   # CLI command handlers (thin layer)
+├── __init__.py            (164 B)   — package metadata only
+├── __main__.py            (956 B)   — `python -m ydiskarc` entry, error-translation shim
+├── client.py              (3 350 B)  — `YandexDiskClient`: session, retries, rate limit, URL validation, GET /download
+├── downloader.py         (7 217 B)  — `ResourceDownloader`: streaming, .part, resume, aria2 fallback
+├── models.py             (3 004 B)  — Dataclasses for the Yandex API JSON shape
+├── config.py             (1 215 B)  — `Config` dataclass: API URLs, chunk size, timeout, retries, UA
+├── core.py               (4 556 B)  — Typer app + three commands (`sync`, `full`, `version`)
+└── cmds/
+    ├── __init__.py        (empty)
+    └── processor.py      (7 200 B)  — `Project` facade + module-level orchestration helpers
 ```
 
-**Benefit:** Easier to test, maintain, and extend.
+**Strengths.**
+- Module responsibilities are clean: `client` owns HTTP, `downloader` owns file I/O, `models` owns JSON shape, `config` owns constants, `cmds/processor` orchestrates.
+- The `Project` class is a thin facade delegating to module-level helpers (`yd_get_full`, `yd_get_and_store_dir`, `scan_directory_for_stats`) — easy to test and easy to read.
+- `_metadata.json` per-directory is a useful design for archival workflows (preserves provenance).
 
-**Priority:** 🟡 **MEDIUM** - Code maintainability (optional refactoring)
+**Weaknesses.**
+- The directory iteration in `yd_get_and_store_dir` is **recursive** (default for any non-empty `path`) — see *Performance* below.
+- `processor.py` mixes three concerns — CLI orchestration (`Project.sync`/`full`), directory scanning (`scan_directory_for_stats`), and the recursive download loop (`yd_get_and_store_dir`). The refactor goal was single-responsibility modules; the file still does three jobs.
+- Module-level helpers (`yd_get_full`, `yd_get_and_store_dir`, `scan_directory_for_stats`) bypass `Project` entirely — `Project.full` is just `yd_get_full(...)`, `Project.sync` is `self.__store(...)`. The facade is a thin pass-through; either delete it or make it the single entry point.
+- `cmds/__init__.py` is empty — there's no public re-export, so callers cannot `from ydiskarc.cmds import Project`.
 
 ---
 
-### 10. **Magic Strings and Constants**
+## 2. Bug Findings (with Reproduction)
 
-#### Issue: Hardcoded Strings Throughout Code
-**Location:** Multiple files
+### 🔴 Bug 1 — `logging.disable(CRITICAL)` is process-wide and irreversible from `setup_logging`
 
-**Current State:**
-- Magic strings like `'_metadata.json'`, `'keys'`, `'yandex_oauth'` scattered throughout code
-- API endpoint paths hardcoded in multiple places
-- Status codes checked as magic numbers (429, etc.)
+**File:** `ydiskarc/core.py:21–34`
 
-**Suggestion:** Extract to constants:
 ```python
-# ydiskarc/constants.py
-METADATA_FILENAME = '_metadata.json'
-CONFIG_KEYS_SECTION = 'keys'
-YANDEX_OAUTH_KEY = 'yandex_oauth'
-HTTP_TOO_MANY_REQUESTS = 429
+def setup_logging(verbose: bool = False) -> None:
+    if verbose:
+        logging.basicConfig(
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.DEBUG
+        )
+    else:
+        # Disable logging when not verbose
+        logging.disable(logging.CRITICAL)
 ```
 
-**Priority:** 🟢 **LOW** - Code maintainability
+**Why it matters.** `logging.disable()` is a process-global *override* that disables every logger at or below the given level regardless of any handler or level configuration. It is **sticky** until the process exits. Two consequences:
+
+1. Any third-party library (e.g., `urllib3`, `requests`) that emits a `WARNING` from import time will be muted for the rest of the run — even when the user later asks for verbose output via a different code path.
+2. If a future feature calls `setup_logging(verbose=False)` first and then `setup_logging(verbose=True)` (e.g., in a daemon mode), the disable persists and the verbose branch's `basicConfig` is silently ineffective.
+
+**Fix.** Configure a `ydiskarc`-namespaced logger with a `NullHandler` and only attach a `StreamHandler` when `verbose=True`. Do **not** call `logging.disable()`.
+
+```python
+import logging
+
+PKG_LOGGER = "ydiskarc"
+
+def setup_logging(verbose: bool = False) -> None:
+    logger = logging.getLogger(PKG_LOGGER)
+    logger.setLevel(logging.DEBUG if verbose else logging.WARNING)
+    # Drop any handlers we previously attached to avoid duplication
+    for h in list(logger.handlers):
+        logger.removeHandler(h)
+    if verbose:
+        h = logging.StreamHandler()
+        h.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+        logger.addHandler(h)
+    # If a parent is not configured (typical CLI), ensure propagation carries messages
+    if not logger.parent.handlers and not logger.handlers:
+        logger.addHandler(logging.NullHandler())
+```
+
+### 🔴 Bug 2 — `logging.basicConfig(...)` in verbose mode is a no-op on real installations
+
+**File:** `ydiskarc/core.py:27–30`
+
+`basicConfig` only configures logging when the root logger has no handlers. As soon as **anything** in the import graph (a pytest plugin, a debugger, an IDE shim, or even a `tqdm` import that already configures handlers) has touched logging, this call silently does nothing. Verified empirically:
+
+```
+>>> logging.basicConfig(level=logging.CRITICAL, format='X')
+>>> logging.basicConfig(level=logging.DEBUG)         # second call
+>>> logging.getLogger().getEffectiveLevel() == logging.DEBUG
+False
+```
+
+**Fix.** Replace with the namespaced-logger approach in Bug 1's snippet (uses `setLevel` on a child logger, which is reliable).
+
+### 🔴 Bug 3 — Path traversal through API-controlled `path`
+
+**File:** `ydiskarc/cmds/processor.py:107–111, 137–139, 154–156, 170–173`
+
+```python
+arr = [output] + [i.rstrip() for i in row["path"].split("/") if i.strip()]
+file_path = os.path.join(*arr[:-1])
+file_name = arr[-1]
+full_file_path = os.path.join(file_path, file_name)
+```
+
+The `row["path"]` and `path` arguments come from the Yandex.Disk API and are joined into the output path with no normalization. A hostile or buggy API response containing `..` or absolute segments would write outside `output`. Even *benign* names with leading whitespace + `..` (`"  /etc/passwd"`) slip through `rstrip()` (which only strips trailing whitespace).
+
+**Fix.** Centralize path construction in a single helper:
+
+```python
+def safe_join(base: str, *parts: str) -> str:
+    """Join path components and ensure the result stays under base."""
+    base_abs = os.path.realpath(base)
+    candidate = os.path.realpath(os.path.join(base_abs, *(p.strip() for p in parts if p.strip())))
+    if os.path.commonpath([base_abs, candidate]) != base_abs:
+        raise ValueError(f"Path traversal detected: {candidate!r} escapes {base_abs!r}")
+    return candidate
+```
+
+Use `safe_join(output, *row["path"].split("/"))` everywhere instead of inline `os.path.join(*arr)`.
+
+**Test coverage:** add `tests/test_processor.py::test_path_traversal_blocked` that feeds an API response with `"path": "../../etc/passwd"` and asserts `ValueError`.
 
 ---
 
-### 11. **Logging Configuration Issue**
+## 3. Code Quality Issues
 
-#### Issue: Duplicate `logging.basicConfig()` Calls
-**Location:** `ydiskarc/core.py` (lines 12 and 26)
+### 🟡 3.1 Rate-limit retry block is duplicated three times
 
-**Current State:**
-- `logging.basicConfig()` is called at module level (line 12)
-- `enableVerbose()` also calls `logging.basicConfig()` (line 26)
-- `basicConfig()` only configures logging if it hasn't been configured yet
-- The second call in `enableVerbose()` won't change the logging level if logging is already configured
+**Files:**
+- `ydiskarc/client.py:67–72` (`get_resource_metadata`)
+- `ydiskarc/client.py:77–84` (`get_download_link`)
+- `ydiskarc/downloader.py:51–68` and `113–131` (initial + resume GET in `get_file`)
 
-**Problem:**
+The pattern is identical:
 ```python
-# Module level (line 12)
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO)
-
-# In enableVerbose() (line 26)
-def enableVerbose() -> None:
-    logging.basicConfig(  # This won't work if logging is already configured!
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.DEBUG)
+resp = session.get(url, ...)
+if resp.status_code == 429:
+    self.client.handle_rate_limit(resp)
+    resp = session.get(url, ...)
+resp.raise_for_status()
 ```
 
-**Suggestion:** Use `logging.getLogger().setLevel()` instead:
+**Fix.** Add a thin wrapper on `YandexDiskClient`:
+
 ```python
-def enable_verbose() -> None:
-    """Enable verbose logging mode."""
-    logging.getLogger().setLevel(logging.DEBUG)
-    # Optionally update handler level if handlers exist
-    for handler in logging.getLogger().handlers:
-        handler.setLevel(logging.DEBUG)
-```
-
-**Alternative:** Configure logging once and use `setLevel()` to change levels dynamically.
-
-**Priority:** 🟡 **MEDIUM** - Functionality bug (verbose mode may not work correctly)
-
----
-
-### 12. **Resource Management: HTTP Sessions and Responses**
-
-#### Issue: Sessions Not Properly Closed
-**Location:** `ydiskarc/cmds/processor.py` (multiple functions)
-
-**Current State:**
-- `create_session_with_retries()` creates `requests.Session()` objects
-- Sessions are never explicitly closed
-- Manual `page.close()` call exists (line 163) but inconsistent
-- Sessions rely on garbage collection for cleanup
-
-**Problem:**
-```python
-# Sessions created but never closed
-session = create_session_with_retries()
-resp = session.get(...)
-# Session remains open until garbage collected
-```
-
-**Suggestion:** Use context managers for sessions:
-```python
-def api_get_with_rate_limit(session: requests.Session, url: str, **kwargs) -> requests.Response:
-    """Make GET request with automatic rate limit handling."""
-    resp = session.get(url, **kwargs)
+def _request_with_backoff(self, method: str, url: str, **kwargs) -> requests.Response:
+    resp = self.session.request(method, url, **kwargs)
     if resp.status_code == 429:
-        handle_rate_limit(resp)
-        resp = session.get(url, **kwargs)
+        self.handle_rate_limit(resp)
+        resp = self.session.request(method, url, **kwargs)
     resp.raise_for_status()
     return resp
-
-# Usage with context manager:
-with create_session_with_retries() as session:
-    resp = api_get_with_rate_limit(session, YD_API, params={'public_key': url})
-    # Session automatically closed
 ```
 
-**Or:** Ensure sessions are closed explicitly:
+`downloader.py` can either accept the client and call it (cleaner) or keep using the raw session but call a free function. The point is to delete the duplication.
+
+### 🟡 3.2 `verify=True` is hardcoded — testing/proxy workflows have no override
+
+`downloader.py:55, 65, 118, 128` all pass `verify=True` directly. Combined with `requests.Session` not exposing `verify` from `Config`, this is fine for production but blocks two legitimate cases:
+
+- **Self-hosted proxies with custom CA bundles** — user has no way to set `REQUESTS_CA_BUNDLE`.
+- **Corporate mitmfs** — users must edit code rather than set `verify` via env or flag.
+
+**Fix.** Add `verify: Optional[str | bool] = True` to `Config`, pass through to the adapter, document `YDISKARC_TLS_VERIFY` env override.
+
+### 🟡 3.3 `id` shadows the Python builtin
+
+`ydiskarc/cmds/processor.py:35`
 ```python
-session = create_session_with_retries()
-try:
-    resp = session.get(...)
-finally:
-    session.close()
+id = url.rsplit("/", 1)[-1]
 ```
+The builtin `id()` returns the memory address of an object — harmless here, but a linter should flag this (and one day will, when flake8/ruff enable the rule).
 
-**Benefit:** Proper resource cleanup, prevents connection leaks, better for long-running processes.
+**Fix.** Rename to `resource_id` or `_id`.
 
-**Priority:** 🟡 **MEDIUM** - Resource management best practice
+### 🟡 3.5 `core.py:119` URL parsing strips the resource identifier correctly but is duplicated logic with `cmds/processor.py:35`
 
----
-
-### 13. **OAuth Key Storage Security**
-
-#### Issue: Plain Text OAuth Key Storage
-**Location:** `ydiskarc/cmds/processor.py` - `configure()` method
-
-**Current State:**
-- OAuth keys stored in plain text `.ydiskarc` file
-- No encryption or secure storage mechanism
-- File permissions not explicitly set
-
-**Suggestion:**
-- Add file permissions check/set (e.g., `os.chmod(filepath, 0o600)`)
-- Consider using system keyring for sensitive data (optional)
-- Document security best practices in README
-- Warn users about keeping `.ydiskarc` out of version control
-
-**Priority:** 🟢 **LOW** - Security enhancement (acceptable for CLI tool)
-
----
-
-### 14. **Missing Dependency Version Constraints**
-
-#### Issue: setup.py Lacks Version Constraints
-**Location:** `setup.py` (lines 37-42)
-
-**Current State:**
-- `setup.py` lists dependencies without version constraints
-- `pyproject.toml` has proper constraints
-- Risk of installing incompatible versions if using setup.py directly
-
-**Suggestion:** Add version constraints to `setup.py` to match `pyproject.toml`:
+Two separate places compute the resource ID from a URL with two slightly different idioms:
 ```python
-install_requires = [
-    'typer>=0.9.0',
-    'pyyaml>=6.0.1',
-    'rich>=13.6.0',
-    'requests>=2.31.0'
-]
+# core.py:119
+output = url.rsplit("/d/", 1)[-1] if "/d/" in url else url.rsplit("/i/", 1)[-1]
+# processor.py:35
+id = url.rsplit("/", 1)[-1]
+```
+The `core.py` version handles both `/d/` and `/i/` prefixes (good); the `processor.py` version naively takes the last segment (works for current shapes but breaks if Yandex ever changes URL layouts, and ignores query strings — a malformed URL with `?ref=...` would corrupt the directory name). Centralize in `client.py` next to `validate_yandex_url`.
+
+### 🟡 3.6 Magic strings / numbers scattered
+
+- `'_metadata.json'` (processor.py:24, 141)
+- `'dump.zip'` (processor.py:40)
+- `'_embedded'`, `'items'`, `'path'`, `'type'`, `'size'`, `'file'` (processor.py repeatedly)
+- Status codes `429`, `503`, etc.
+
+Move to `ydiskarc/constants.py`:
+```python
+METADATA_FILENAME = "_metadata.json"
+DEFAULT_FULL_FILENAME = "dump.zip"
+RATE_LIMITED = 429
+API_LIST_LIMIT = 1000
 ```
 
-**Priority:** 🟢 **LOW** - Dependency management consistency
+---
+
+## 4. Security Findings
+
+### 🟡 4.1 Plaintext OAuth storage with no file permission hardening
+
+`Project.configure()` (processor.py:193–209) writes an OAuth token to `<projectdir>/.ydiskarc` using `yaml.safe_dump`. The token is stored in plaintext, with default umask (typically `0o644` world-readable on Linux/macOS). Worse: **the method is not wired to any Typer command in `core.py`** — it is dead code that nonetheless describes an insecure pattern if it ever becomes live.
+
+**Fix.**
+1. Either delete `configure()` or wire it as `ydiskarc configure --key ...` and add `os.chmod(filepath, 0o600)` after write.
+3. Mention in `README.md` to add `.ydiskarc` to `.gitignore`.
+
+### 🟡 4.2 Content-Disposition filename decoding is naive
+
+`downloader.py:78–84`:
+```python
+fname = (
+    re.findall("filename=(.+)", page.headers["Content-Disposition"])[0]
+    .strip('"')
+    .encode("latin-1")
+    .decode("utf-8")
+)
+```
+This will:
+- Treat `filename*=` (RFC 5987) as not present
+- Match `filename=...; filename=...` ambiguously
+- Crash on filenames containing literal newlines or CRLF injection
+
+**Fix.** Use `requests`' built-in helper or `email.message.Message` parsing; otherwise explicitly handle `filename*=UTF-8''...` first.
+
+### 🟡 4.3 `aria2` path is taken verbatim and passed to `subprocess.run`
+
+`downloader.py:184–195`. `aria2path` is the *first positional* arg passed by the user. While the CLI doesn't currently surface it, the parameter is part of the public API and a caller could pass arbitrary binaries. Not exploitable as long as it's not wired to a CLI option, but worth noting.
+
+### 🟢 4.4 `verify=True` hardcoded
+See §3.2.
+
+### 🟢 4.5 No Dependabot / no SCA scanning in CI
+
+`requirements.txt` pins no upper bounds. `PyYAML>=6.0.1` is fine today; a future CVE in `requests` (cf. CVE-2024-35195 in `requests`/`urllib3` SESSION verify) would slip through. Add `github/dependabot.yml` and either `bandit` or `pip-audit` to CI.
 
 ---
 
-### 15. **Documentation Improvements** (Enhancement)
+## 5. Testing Gaps
 
-#### Issue: README Could Be Enhanced
-**Location:** `README.md`
+20 tests pass; coverage is reasonable for happy paths but the following are uncovered or under-covered.
 
-**Suggestions:**
-- Add more examples for error scenarios
-- Document all configuration options
-- Add troubleshooting section for common issues
-- Document API rate limits and best practices
-- Add performance tips for large downloads
-- Document resume behavior in detail
-- Add examples of using with different URL formats
+| Path | Where | Risk |
+|---|---|---|
+| `ResourceDownloader.get_file` resume branch | `downloader.py:107–136` | No test exercises `os.path.exists(part_filename) is True` path |
+| `aria2` branch | `downloader.py:183–200` | Untested; parameter is also unreachable from CLI |
+| 429 retry in `client.get_resource_metadata` / `get_download_link` | `client.py:67–72, 80–84` | Mocked client always returns 200 |
+| `validate_yandex_url` for `.com` TLDs | `client.py:47–56` | Only `.ru` patterns tested |
+| Path traversal | `processor.py:107–111, 137–139` | Not blocked, not tested (see Bug 3) |
+| `setup_logging(verbose=True)` actually produces output | `core.py:27–30` | Confirmed broken by hand; no test catches it |
+| `aria2path` validation | `downloader.py:184` | No test that `ValueError` is raised |
+| `Project.configure()` | `processor.py:193–209` | Dead code, untested path |
 
-**Priority:** 🟡 **MEDIUM** - User experience (documentation enhancement)
+**Recommended test additions** (ordered by value):
+1. `test_path_traversal_blocked` — high-value security test
+2. `test_verbose_logging_emits` — would catch Bug 2
+3. `test_resume_from_part_file` — would catch a regression in the `.part` invariant
+5. `test_rate_limit_retry` — exercises `handle_rate_limit` mocked path
+6. `test_aria2_missing_path` — defensive test
+7. `test_validate_yandex_url_dotcom` — covers the four-pattern regex
 
----
-
-## 🟢 Enhancement Opportunities
-
-### 16. **CI/CD Enhancements**
-
-#### Suggestion: Automated Dependency Updates
-**Location:** `.github/workflows/ci.yml`
-
-**Suggestions:**
-- Add Dependabot or Renovate for automated dependency updates
-- Add automated security scanning (e.g., GitHub Security Advisories)
-- Add release automation workflow
-- Add automated changelog generation
-
-**Priority:** 🟢 **LOW** - DevOps automation
+**Coverage tooling.** Add `pytest-cov` to `requirements-dev.txt`, run with `--cov=ydiskarc --cov-fail-under=85` in CI.
 
 ---
 
-### 17. **Performance Improvements**
+## 6. CI/CD and DevOps
 
-#### Suggestion: Parallel Downloads
-**Location:** Directory sync operations
+### 🟡 6.1 `mypy || true` masks typing regressions
 
-**Current State:** Files are downloaded sequentially
+`.github/workflows/ci.yml:84`:
+```yaml
+- name: Type check
+  run: mypy ydiskarc --ignore-missing-imports || true
+```
+A `mypy` regression cannot fail the build. Either remove `|| true` or split into a dedicated `lint` job that fails fast.
 
-**Suggestion:** Add option for parallel downloads:
-- Add `--parallel` or `--workers` flag
-- Use `concurrent.futures.ThreadPoolExecutor` for parallel downloads
-- Respect rate limits when parallelizing
+### 🟡 6.2 Tox targets EOL Python 3.8
 
-**Benefit:** Faster downloads for large directories
+`tox.ini:7`:
+```
+envlist = py38
+```
+`pyproject.toml` requires `>=3.9`. The CI matrix is `3.9/3.10/3.11` — tox is the odd one out. Update to `envlist = py39,py310,py311,py312`.
 
-**Priority:** 🟢 **LOW** - Nice to have feature
+### 🟡 6.3 Pre-commit pins Python 3.6
 
----
+`.pre-commit-config.yaml:38`:
+```yaml
+args: ['--ignore-missing-imports', '--python-version=3.6']
+```
+This will silently skip checks that don't exist in 3.6 (e.g., PEP 604 unions in 3.10+). Use `3.9` to match `pyproject.toml`.
 
-### 18. **Progress Indicators**
+### 🟡 6.4 No `mypy` invocation in the `lint` job, no `isort`/`ruff`
 
-#### Suggestion: Enhanced Progress Feedback
-**Location:** Directory sync operations
+The `lint` job runs `flake8`, `black --check`, `mypy` — but no `isort` or `ruff`, even though `.pre-commit-config.yaml` defines `isort` and the README documents `ruff` as a quality gate. Add them; `ruff` is fast enough to run unconditionally.
 
-**Current State:** Progress bars exist for individual files
+### 🟢 6.5 No release automation
 
-**Suggestions:**
-- Add overall progress bar for directory sync
-- Show file count and current file being processed
-- Add `--quiet` flag for script usage
-- Show download speed and ETA
-- Show total size and remaining size
+No `release.yml`; tags and PyPI uploads are manual. Add a GitHub Actions workflow that builds and publishes on tag push (using `pypa/gh-action-pypi-publish` with OIDC trusted publishing).
 
-**Priority:** 🟢 **LOW** - User experience enhancement
+### 🟢 6.6 Coverage not tracked
 
----
+No `codecov.yml`, no `--cov` in CI. Add `pytest-cov` and Codecov (or `coverage-badge`).
 
-### 19. **Configuration File Support**
+### 🟢 6.7 Action versions are dated
 
-#### Suggestion: Enhanced Configuration
-**Location:** Configuration handling
-
-**Current State:** Basic `.ydiskarc` file support exists
-
-**Suggestions:**
-- Support for multiple configuration profiles
-- Environment variable support (e.g., `YDISKARC_OUTPUT_DIR`)
-- Global vs local configuration files
-- Configuration validation
-- Better error messages for invalid configuration
-
-**Priority:** 🟢 **LOW** - Convenience feature
+`actions/checkout@v3`, `actions/setup-python@v4`, `actions/cache@v3` — bump to `v4`/`v5` to pick up Node 20 runtime and security fixes.
 
 ---
 
-### 20. **Logging Improvements**
+## 7. Performance
 
-#### Suggestion: Structured Logging
-**Location:** Logging throughout codebase
+### 🟡 7.1 Recursive `yd_get_and_store_dir` — single connection per file
 
-**Current State:** Basic logging with string formatting
+`processor.py:122–184` recurses synchronously into every subdirectory, calling the API once per directory and downloading one file at a time. For a 1k-file resource on a healthy link, the wall time is dominated by request round-trips.
 
-**Suggestions:**
-- Use structured logging (JSON format option)
-- Add log levels configuration
-- Add `--log-file` option
-- Add `--log-level` option
-- Better log message formatting
+**Options (in order of complexity):**
+1. **Page through `_embedded.items`** using `limit`/`offset`. Currently `limit=1000` is passed; if the directory has more, `items` will be paginated and the rest is silently dropped. Use `offset` to follow.
+2. **ThreadPoolExecutor for downloads** — add a `--parallel N` option. The API supports this since requests are independent.
+3. **Persistent session per worker** — already done by `client.session`; just make it thread-safe (one session shared with `HTTPAdapter(pool_connections=N, pool_maxsize=N)`).
 
-**Priority:** 🟢 **LOW** - Advanced feature
+### 🟡 7.2 `verify=True` on every request — fine, but no `pool_maxsize`
 
----
+`HTTPAdapter(max_retries=...)` doesn't set `pool_connections`/`pool_maxsize`, so the default (10) is used. For parallel downloads, raise this to match `--parallel N`.
 
-### 21. **Testing Enhancements**
+### 🟢 7.3 `chunk_size = 32 * 1024` is conservative
 
-#### Suggestion: Additional Test Types
-**Location:** Test suite
+32 KB is a safe lower bound for flaky networks but adds syscall overhead on fast links. For typical Yandex public resources (CDN-fronted), 256 KB–1 MB is more appropriate. Make it configurable in `Config` or via env var.
 
-**Suggestions:**
-- Add property-based tests (using Hypothesis)
-- Add performance/benchmark tests
-- Add fuzzing tests for URL parsing
-- Add integration tests with real API (optional, behind flag)
-- Add tests for Windows path handling
-- Add tests for Unicode filename handling
+### 🟢 7.4 Two API round-trips per file (metadata + download link)
 
-**Priority:** 🟢 **LOW** - Testing improvements
+`full` command does `get_resource_metadata` then `get_download_link` for the URL. For directories, every directory visit is two HTTP calls (one for the listing, one per file via the `file` field in the listing — actually only one call per file because `file` is in the listing). So `full` for files wastes one call vs. `sync`. Could fetch the download link directly from the listing's `file` field for known single-file URLs.
 
 ---
 
-### 22. **CLI Enhancements**
+## 8. Documentation
 
-#### Suggestion: Additional CLI Features
-**Location:** `core.py`
+### 🟢 8.1 CHANGELOG has duplicate `[1.1.0]` and `[Unreleased]` entries
 
-**Suggestions:**
-- Add `--dry-run` flag to preview what would be downloaded
-- Add `--exclude` pattern support
-- Add `--include` pattern support
-- Add `--max-size` limit
-- Add `--continue-on-error` flag
-- Add interactive mode for URL input
-- Add configuration command (`ydiskarc config`)
+`CHANGELOG.md:13–60` lists the same changes under both `[1.1.0]` and `[Unreleased]`. Consolidate into a single `[Unreleased]` block, or move unreleased changes into a `[1.2.0]` placeholder.
 
-**Priority:** 🟢 **LOW** - Feature enhancements
+### 🟢 8.2 README says Python 3.6+, pyproject.toml says 3.9+
 
----
+`README.md:38` says "Python version 3.6 or greater is required" but `pyproject.toml:10` says `>=3.9`. The README is stale.
 
-## 📊 Priority Matrix (Updated)
+### 🟢 8.3 OpenSpec `project.md` is a placeholder
 
-### High Priority (Do First) 🔴
-1. ✅ ~~Fix security vulnerabilities~~ (DONE)
-2. ✅ ~~Add error handling~~ (DONE)
-3. ✅ ~~Create test suite~~ (DONE)
-4. ✅ ~~Add CI/CD pipeline~~ (DONE)
-5. ✅ ~~Create pyproject.toml~~ (DONE)
-6. ✅ ~~Fix missing pytest import in conftest.py~~ (DONE)
-7. ✅ ~~Add edge case test coverage~~ (DONE)
+`openspec/project.md` contains only template fill-in markers (`[Describe your project's purpose...]`). Populate it (purpose, tech stack, conventions, testing strategy, git workflow) per `openspec/AGENTS.md:44`.
 
-### Medium Priority (Do Soon) 🟡
-8. ✅ ~~Complete type hints~~ (DONE)
-9. ✅ ~~Improve error message consistency~~ (DONE)
-10. ✅ ~~Add URL validation~~ (DONE)
-11. 🟡 **NEW:** Reduce code duplication (rate limit handling)
-12. 🟡 **NEW:** Fix inconsistent naming (`enableVerbose` → `enable_verbose`)
-13. 🟡 **NEW:** Add test coverage reporting to CI
-14. 🟡 **NEW:** Resolve setup.py vs pyproject.toml duplication
-15. 🟡 **NEW:** Add path traversal protection
-16. 🟡 **NEW:** Add `__all__` exports to modules
-17. 🟡 **NEW:** Enforce linting in CI (remove `|| true`)
-18. 🟡 **NEW:** Complete Unicode filename handling tests
-19. 🟡 **NEW:** Fix logging configuration (verbose mode may not work)
-20. 🟡 **NEW:** Improve resource management (session cleanup)
-21. 🟡 Improve code organization (Optional)
-22. 🟡 Enhance documentation (Optional)
+### 🟢 8.4 Spec for the refactor is missing `## Purpose`
 
-### Low Priority (Nice to Have) 🟢
-21. 🟢 **NEW:** Extract magic strings to constants
-22. 🟢 **NEW:** Improve OAuth key storage security
-23. 🟢 **NEW:** Add version constraints to setup.py
-24. 🟢 **NEW:** CI/CD automation enhancements
-25. 🟢 Add parallel downloads
-26. 🟢 Enhanced progress indicators
-27. 🟢 Configuration file improvements
-28. 🟢 Structured logging
-29. 🟢 Additional test types
-30. 🟢 CLI enhancements
+`openspec/specs/core-architecture/spec.md:4`:
+```
+## Purpose
+TBD - created by archiving change refactor-architecture. Update Purpose after archive.
+```
+The TODO is from the archive step — needs filling in.
+
+### 🟢 8.5 OpenSpec `AGENTS.md` duplicates the project's `AGENTS.md` content
+
+`openspec/AGENTS.md` is the upstream OpenSpec instructions; it doesn't reference the project's own `AGENTS.md` (which describes the ydiskarc architecture). Link the two or note the relationship.
 
 ---
 
-## 📝 Quick Wins
+## 9. Suggested Action Plan
 
-### Completed Quick Wins ✅
-1. ✅ **Fix pytest import in conftest.py** (DONE)
-2. ✅ **Add URL validation** (DONE)
-3. ✅ **Add return type hints** (DONE)
-4. ✅ **Improve error messages** (DONE)
-5. ✅ **Add more test cases** (DONE)
+### Phase 1 — Bug fixes (this week)
+1. Replace `setup_logging` with namespaced-logger approach (§Bug 1, §Bug 2).
+2. Add `safe_join` helper and route all path constructions through it; add traversal test (§Bug 3).
+3. Remove `id =` builtin shadow (§3.3).
+4. Add the missing test cases from §5 (#1–#5).
 
-### New Quick Wins Available 🎯
-6. 🟡 **Rename `enableVerbose()` to `enable_verbose()`** - Simple rename for PEP 8 compliance
-7. 🟡 **Fix logging configuration** - Use `setLevel()` instead of `basicConfig()` in verbose mode
-8. 🟡 **Add `__all__` exports** - Quick addition to improve API clarity
-9. 🟡 **Extract rate limit handling helper** - Reduces duplication significantly
-10. 🟡 **Add version constraints to setup.py** - Copy from pyproject.toml
-11. 🟡 **Remove `|| true` from CI linting** - Enforce code quality
+### Phase 2 — Quality + security (this sprint)
+1. `_request_with_backoff` to dedupe rate-limit logic (§3.1).
+2. `Config.verify` + env override (§3.2, §4.4).
+3. Move magic strings to `constants.py` (§3.6).
+4. `Content-Disposition` parsing hardening via RFC 5987 path (§4.2).
+5. `Project.configure()` — either delete or wire + `chmod 600` (§4.1).
+6. CI: remove `mypy || true`; bump `actions/*` to v4/v5; bump tox envlist; bump pre-commit python to 3.9 (§6.1–6.3, §6.7).
+7. README Python-version correction; CHANGELOG consolidation; OpenSpec `project.md` and `spec.md Purpose` (§8.1–8.4).
 
----
+### Phase 3 — Performance + features (next sprint)
+1. `--parallel N` for sync (§7.1).
+2. `pool_maxsize` from `Config` (§7.2).
+3. `chunk_size` from `Config` (§7.3).
+4. Skip duplicate API call in `full` when `file` URL is in metadata (§7.4).
+5. Add `pytest-cov` and Codecov badge (§6.6).
+6. Add Dependabot + `pip-audit` (§4.5).
+7. Add release workflow (§6.5).
 
-## 🎯 Recommended Next Steps
-
-### Phase 1: Critical Fixes (Immediate) ✅ COMPLETED
-1. ✅ Fix missing `pytest` import in `conftest.py`
-2. ✅ Add edge case tests for error scenarios
-3. ✅ Add URL validation
-
-### Phase 2: Quality Improvements (Week 1-2) ✅ COMPLETED
-1. ✅ Complete type hints
-2. ✅ Improve error message consistency
-3. ✅ Add more comprehensive tests
-4. 🟡 Enhance documentation (Optional)
-
-### Phase 2.5: Code Quality Refinements (New Recommendations) 🟡
-1. 🟡 Reduce code duplication (rate limit handling)
-2. 🟡 Fix naming inconsistencies
-3. 🟡 Fix logging configuration (verbose mode bug)
-4. 🟡 Improve resource management (session cleanup)
-5. 🟡 Add test coverage reporting
-6. 🟡 Resolve packaging file duplication
-7. 🟡 Add path traversal protection
-8. 🟡 Enforce linting in CI
-
-### Phase 3: Enhancements (Week 3-4)
-1. Consider code organization refactoring
-2. Add parallel downloads option
-3. Enhanced progress indicators
-4. Additional CLI features
+### Phase 4 — Code organization (later)
+1. Collapse `Project` facade or remove it; let `core.py` call `yd_get_full` / `yd_get_and_store_dir` directly (§1).
+2. Move recursive iteration in `yd_get_and_store_dir` to a `DirectoryWalker` class so `sync` and `full-dir` can share.
+3. Add `__all__` to each module (§headline #5).
 
 ---
 
-## 📚 Additional Resources
+## 10. Strengths Worth Preserving
 
-- [Typer Documentation](https://typer.tiangolo.com/) - Modern CLI framework used
-- [Python Testing Best Practices](https://docs.pytest.org/en/stable/)
-- [PEP 518 - pyproject.toml](https://peps.python.org/pep-0518/)
-- [Requests Best Practices](https://requests.readthedocs.io/en/latest/user/advanced/#advanced-usage)
-- [Python Type Hints](https://docs.python.org/3/library/typing.html)
+The refactor moved the codebase from a single 800-LOC `processor.py` to four focused modules. The result is genuinely better:
 
----
-
-## Summary
-
-**Current Status:** The codebase is in excellent shape with most critical issues resolved. The repository has:
-
-- ✅ Comprehensive test suite
-- ✅ CI/CD pipeline
-- ✅ Modern packaging (pyproject.toml)
-- ✅ Pre-commit hooks
-- ✅ Good error handling
-- ✅ Security best practices
-- ✅ Modern CLI framework (Typer)
-- ✅ Retry logic and resume support
-- ✅ Rate limiting handling
-
-**Remaining Gaps:**
-- 🟡 **Code Quality:** Code duplication, naming inconsistencies, missing coverage enforcement
-- 🟡 **Bugs:** Logging configuration issue (verbose mode may not work), resource management
-- 🟡 **Security:** Path traversal protection needed
-- 🟡 **Packaging:** setup.py/pyproject.toml duplication and inconsistencies
-- 🟡 **CI/CD:** Linting failures ignored, no coverage reporting
-- 🟡 **Optional:** Code organization refactoring (nice to have)
-- 🟡 **Optional:** Documentation enhancements (nice to have)
-- 🟢 **Nice to have:** Various feature enhancements
-
-**Key Strengths:**
-- ✅ Well-structured codebase
-- ✅ Comprehensive test coverage (including edge cases)
-- ✅ Complete type hints
-- ✅ Modern Python practices
-- ✅ Comprehensive error handling
-- ✅ Security-conscious implementation
-- ✅ URL validation implemented
-- ✅ User-friendly error messages
-- ✅ Good documentation structure
-
-**Status:** All critical and important issues have been resolved! The codebase is production-ready.
+- **`Config` dataclass** with derived URLs and auto-User-Agent is a clean pattern.
+- **`ResourceDownloader` as an injected dependency** of `YandexDiskClient.session` keeps HTTP details in `client.py` and file-I/O details in `downloader.py`.
+- **`models.py` dataclasses** with `from_dict` constructors make it easy to swap to `pydantic` later without rippling through the code.
+- **`safe_part_filename`** in `downloader.py` — the `.part` invariant is the single most important safety property of this tool and it is implemented correctly. Test it (Phase 1 #4).
+- **URL validation** at the CLI boundary keeps bad input from reaching the API layer.
+- **`logging.disable` was likely the wrong tool**, but the *intent* (quiet by default) is good — namespaced loggers achieve the same UX without breaking downstream.
 
 ---
 
-## Code Quality Metrics
+## Quick Wins (≤30 min each)
 
-**Test Coverage:** Good foundation, but coverage reporting not enforced in CI
-**Type Safety:** Mostly complete, minor gaps
-**Documentation:** Good README, could add more examples and API docs
-**Error Handling:** Comprehensive, but some code duplication exists
-**Security:** Good (safe YAML loading, proper subprocess usage), but path traversal protection needed
-**Code Quality:** Good overall, but some duplication and naming inconsistencies
-**Resource Management:** Sessions not properly closed, manual response cleanup inconsistent
-**Logging:** Configuration issue - verbose mode may not work correctly due to duplicate basicConfig calls
-**Modern Practices:** Excellent (pyproject.toml, pre-commit, CI/CD), but setup.py duplication exists
-**CI/CD:** Functional, but linting failures ignored and coverage not reported
+- ☐ Rename `id = url.rsplit(...)` → `resource_id`
+- ☐ Add `__all__ = [...]` to each module
+- ☐ Add `pytest-cov` to requirements-dev and CI
+- ☐ Remove `mypy || true`
+- ☐ Bump `tox.ini` envlist
+- ☐ Bump `.pre-commit-config.yaml` Python to 3.9
+- ☐ Fix README Python version requirement
+- ☐ Fix CHANGELOG duplicate `[Unreleased]` block
+- ☐ Fill in `openspec/project.md` and `openspec/specs/core-architecture/spec.md` Purpose
+- ☐ Add `tests/test_processor.py::test_path_traversal_blocked` (will fail until §Bug 3 is fixed)
 
-**Overall Assessment:** The repository is production-ready with several medium-priority improvements recommended for code quality, security hardening, and maintainability. The codebase is solid but would benefit from addressing code duplication, enforcing quality gates in CI, and resolving packaging inconsistencies.
+---
+
+## References
+
+- `ydiskarc/core.py:21` — `setup_logging` (Bugs 1 & 2)
+- `ydiskarc/cmds/processor.py:107, 137, 154, 170` — path-traversal sinks (Bug 3)
+- `ydiskarc/client.py:67, 77` — duplicated rate-limit retry (3.1)
+- `ydiskarc/downloader.py:51, 113` — same duplication in streaming path
+- `ydiskarc/cmds/processor.py:35` — `id` builtin shadow (3.3)
+- `ydiskarc/cmds/processor.py:193` — `Project.configure()` dead code (4.1)
+- `.github/workflows/ci.yml:84` — `mypy || true` (6.1)
+- `tox.ini:7` — py38 EOL (6.2)
+- `.pre-commit-config.yaml:38` — Python 3.6 (6.3)
+- `CHANGELOG.md:13–60` — duplicate entries (8.1)
+- `README.md:38` — stale Python 3.6+ claim (8.2)
+- `openspec/project.md` — placeholder (8.3)
+- `openspec/specs/core-architecture/spec.md:4` — TBD Purpose (8.4)
